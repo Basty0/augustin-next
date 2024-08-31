@@ -8,33 +8,29 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isClient, setIsClient] = useState(false);
   const router = useRouter();
 
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   function getCookie(name) {
-    let value = `; ${document.cookie}`;
-    let parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop()?.split(";").shift();
+    if (typeof document !== "undefined") {
+      let value = `; ${document.cookie}`;
+      let parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop()?.split(";").shift();
+    }
+    return null;
   }
 
   const handleLogin = async () => {
     setIsLoading(true);
     try {
-      const csrfToken = document
-        .querySelector('meta[name="csrf-token"]')
-        ?.getAttribute("content");
-
-      if (!csrfToken) {
-        throw new Error("CSRF token not found");
-      }
-      const response = await axios.post(
-        "http://127.0.0.1:8000/api/login",
-        { email, password },
-        {
-          headers: {
-            "X-CSRF-TOKEN": csrfToken,
-          },
-        }
-      );
+      const response = await axios.post("http://127.0.0.1:8000/api/login", {
+        email,
+        password,
+      });
 
       if (response.status === 200) {
         document.cookie = `userToken=${response.data.token}; `;
@@ -51,11 +47,18 @@ export default function LoginPage() {
       setIsLoading(false);
     }
   };
+
+  if (!isClient) {
+    return null; // ou un composant de chargement
+  }
+
   const token = getCookie("userToken");
 
   if (token) {
-    return router.push("/home");
+    router.push("/home");
+    return null;
   }
+
   console.log(document.cookie);
   return (
     <div className="flex items-center justify-center min-h-screen">
