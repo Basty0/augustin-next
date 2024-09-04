@@ -84,7 +84,7 @@ const Home = () => {
             <div
               key={index}
               className="card bg-primary shadow-lg cursor-pointer"
-              onClick={() => router.push(`/cour/${item.id}`)}
+              onClick={() => router.push(`/classe/cours/${item.id}`)}
             >
               <div className="card-body bg-gray-50 border-2 border-green-900 rounded-lg">
                 <div className="flex items-center gap-2">
