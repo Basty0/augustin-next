@@ -45,7 +45,7 @@ export default function Page({ params }) {
       }
 
       const response = await axios.get(
-        `https://lycee-augustin.mg/cour/presence/cours/${params.slug}/eleves`,
+        `https://lycee-augustin.mg/api/cour/presence/cours/${params.slug}/eleves`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
