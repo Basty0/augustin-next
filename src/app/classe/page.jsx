@@ -27,11 +27,14 @@ const Home = () => {
       } else {
         console.log("Token found:", token);
       }
-      const response = await axios.get("http://127.0.0.1:8000/api/classes", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.get(
+        "https://lycee-augustin.mg/api/classes",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       console.log(response.data);
       setClasses(response.data);
     } catch (error) {

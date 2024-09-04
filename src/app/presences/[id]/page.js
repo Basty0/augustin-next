@@ -38,7 +38,7 @@ export default function Presences({ params }) {
       }
 
       const courResponse = await axios.get(
-        `http://127.0.0.1:8000/api/cour/courspresence/${params.id}/eleves`,
+        `https://lycee-augustin.mg/api/cour/courspresence/${params.id}/eleves`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -46,7 +46,7 @@ export default function Presences({ params }) {
         }
       );
       const classeResponse = await axios.get(
-        `http://127.0.0.1:8000/api/cour/presence/${params.id}/eleves`,
+        `https://lycee-augustin.mg/api/cour/presence/${params.id}/eleves`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -93,7 +93,7 @@ export default function Presences({ params }) {
   const enregistrerPresences = async () => {
     try {
       const response = await axios.put(
-        `http://127.0.0.1:8000/api/cour/presence/${coursId}`,
+        `https://lycee-augustin.mg/api/cour/presence/${coursId}`,
         {
           presences: presences.map((p) => ({
             eleve_id: p.eleve_id,

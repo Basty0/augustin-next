@@ -7,9 +7,7 @@ export default function Home() {
       <Header />
       <main className="flex min-h-screen flex-col items-center justify-between">
         <div className="bg-white p-5 rounded-full ">
-          <h1 className="text-6xl text-zinc-900 font-bold">
-            C'est Daoud Djaffar
-          </h1>
+          <h1 className="text-6xl text-zinc-900 font-bold">Lycée Augustin</h1>
         </div>
       </main>
     </div>

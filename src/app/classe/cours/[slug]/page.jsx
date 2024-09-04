@@ -42,7 +42,7 @@ const CoursListPage = ({ params }) => {
       }
 
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/enseignement/${params.slug}`,
+        `https://lycee-augustin.mg/api/enseignement/${params.slug}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -68,7 +68,7 @@ const CoursListPage = ({ params }) => {
       }
 
       const response = await axios.post(
-        `http://127.0.0.1:8000/api/enseignements/${enseId}/cours`,
+        `https://lycee-augustin.mg/api/enseignements/${enseId}/cours`,
         { ...newCours, enseignement_id: enseId },
         {
           headers: {

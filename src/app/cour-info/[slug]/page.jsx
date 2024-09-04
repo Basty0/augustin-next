@@ -45,7 +45,7 @@ export default function Page({ params }) {
       }
 
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/cour/presence/cours/${params.slug}/eleves`,
+        `https://lycee-augustin.mg/cour/presence/cours/${params.slug}/eleves`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -87,7 +87,7 @@ export default function Page({ params }) {
       }
 
       const response = await axios.put(
-        `http://127.0.0.1:8000/api/cour/update/${params.slug}`,
+        `https://lycee-augustin.mg/cour/update/${params.slug}`,
         updatedCours,
         {
           headers: {

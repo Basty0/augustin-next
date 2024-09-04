@@ -49,7 +49,7 @@ export default function Profil() {
           return;
         }
         const response = await axios.get(
-          "http://127.0.0.1:8000/api/user/auth",
+          "https://lycee-augustin.mg/api/user/auth",
           {
             headers: {
               Authorization: `Bearer ${token}`,
