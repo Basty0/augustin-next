@@ -1,21 +1,20 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { ScanLine } from "lucide-react";
-import { Html5Qrcode } from "html5-qrcode";
+import { QrReader } from "react-qr-reader";
 import Header from "@/components/Header";
 import Verie from "@/components/Verie";
+import PresenceNavButton from "@/components/PresenceHeader";
 
 export default function Presences({ params }) {
-  const [scanned, setScanned] = useState(false);
   const [scanning, setScanning] = useState(false);
   const router = useRouter();
-  const coursId = params.id; // Remplacez ceci par la logique appropriée pour obtenir le coursId
+  const coursId = params.id;
   const [presences, setPresences] = useState([]);
   const [loading, setLoading] = useState(true);
   const [notif, setNotif] = useState(0);
-  const scannerRef = useRef(null);
 
   useEffect(() => {
     if (params.id) {
@@ -114,9 +113,16 @@ export default function Presences({ params }) {
     }
   };
 
-  const handleBarCodeScanned = (data) => {
-    setScanned(true);
-    updateEleveStatus(data);
+  const handleScan = (result) => {
+    if (result) {
+      updateEleveStatus(result.text);
+      // Supprimez cette ligne : setNotif(1);
+      setTimeout(() => setNotif(0), 2000);
+    }
+  };
+
+  const handleError = (error) => {
+    console.error(error);
   };
 
   const Notification = () => {
@@ -137,53 +143,6 @@ export default function Presences({ params }) {
     }
   };
 
-  const startScanner = () => {
-    const html5QrCode = new Html5Qrcode("reader");
-    html5QrCode
-      .start(
-        { facingMode: "environment" },
-        {
-          fps: 10,
-          qrbox: { width: 250, height: 250 },
-        },
-        (decodedText) => {
-          handleBarCodeScanned(decodedText);
-          html5QrCode.stop();
-          setScanning(false);
-        },
-        (error) => {
-          console.error("QR code scanning error:", error);
-        }
-      )
-      .catch((err) => {
-        console.error("Failed to start scanner:", err);
-      });
-
-    scannerRef.current = html5QrCode;
-    setScanning(true);
-  };
-
-  const stopScanner = () => {
-    if (scannerRef.current) {
-      scannerRef.current
-        .stop()
-        .then(() => {
-          setScanning(false);
-        })
-        .catch((err) => {
-          console.error("Failed to stop scanner:", err);
-        });
-    }
-  };
-
-  const renderScanner = () => {
-    return (
-      <div className="w-full aspect-square">
-        <div id="reader" className="w-full h-full"></div>
-      </div>
-    );
-  };
-
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -195,8 +154,19 @@ export default function Presences({ params }) {
   return (
     <Verie className="">
       <Header />
+      <PresenceNavButton slug={params.id} />
       <div className="flex flex-col items-center mt-16 p-4">
-        {!scanned && renderScanner()}
+        {scanning && (
+          <div className="w-full max-w-sm">
+            <QrReader
+              delay={300}
+              onError={handleError}
+              onResult={handleScan}
+              style={{ width: "100%" }}
+              constraints={{ facingMode: "environment" }}
+            />
+          </div>
+        )}
 
         <div className="w-full mt-4">
           <Notification />
@@ -204,16 +174,16 @@ export default function Presences({ params }) {
 
         <div className="w-full bg-white p-5 items-center mt-4">
           <p className="text-base mb-10 text-center">
-            {scanned
-              ? "Code QR scanné. Scannez à nouveau ou terminez."
-              : "Scannez un code QR pour enregistrer la présence."}
+            {scanning
+              ? "Scannez un code QR pour enregistrer la présence."
+              : "Cliquez sur Scanner pour commencer."}
           </p>
 
           <button
             className={`bg-green-900 border border-green-900 px-5 py-3 rounded-xl w-60 flex justify-center items-center mx-auto ${
               scanning ? "opacity-50" : ""
             }`}
-            onClick={scanning ? stopScanner : startScanner}
+            onClick={() => setScanning(!scanning)}
           >
             <ScanLine color="white" size={24} />
             <span className="text-white text-base font-bold ml-2">

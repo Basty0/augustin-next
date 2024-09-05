@@ -87,7 +87,7 @@ export default function Page({ params }) {
       }
 
       const response = await axios.put(
-        `https://lycee-augustin.mg/cour/update/${params.slug}`,
+        `https://lycee-augustin.mg/api/cour/update/${params.slug}`,
         updatedCours,
         {
           headers: {
