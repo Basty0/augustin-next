@@ -25,7 +25,7 @@ const Home = () => {
         console.error("No token found");
         return;
       } else {
-        console.log("Token found:", token);
+        // console.log("Token found:", token);
       }
       const response = await axios.get(
         "https://lycee-augustin.mg/api/classes",
@@ -35,7 +35,7 @@ const Home = () => {
           },
         }
       );
-      console.log(response.data);
+      // console.log(response.data);
       setClasses(response.data);
     } catch (error) {
       console.error("Error fetching classes:", error);

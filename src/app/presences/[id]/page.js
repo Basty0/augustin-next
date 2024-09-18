@@ -99,6 +99,11 @@ export default function Presences({ params }) {
 
   const enregistrerPresences = async () => {
     try {
+      const token = getCookie("userToken");
+      if (!token) {
+        console.error("No token found");
+        return;
+      }
       const response = await axios.put(
         `https://lycee-augustin.mg/api/cour/presence/${coursId}`,
         {
@@ -109,6 +114,7 @@ export default function Presences({ params }) {
         },
         {
           headers: {
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         }

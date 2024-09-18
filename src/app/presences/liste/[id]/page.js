@@ -29,7 +29,7 @@ export default function Presences({ params }) {
     try {
       const token = getCookie("userToken");
       if (!token) {
-        console.error("No token found");
+        // console.error("No token found");
         return;
       }
 
@@ -56,7 +56,7 @@ export default function Presences({ params }) {
         setPresences(classeResponse.data);
       }
     } catch (error) {
-      console.error("Error fetching data:", error);
+      // console.error("Error fetching data:", error);
     } finally {
       setLoading(false);
     }
@@ -79,6 +79,11 @@ export default function Presences({ params }) {
   const enregistrerPresences = async () => {
     setIsSaving(true);
     try {
+      const token = getCookie("userToken");
+      if (!token) {
+        // console.error("No token found");
+        return;
+      }
       const response = await axios.put(
         `https://lycee-augustin.mg/api/cour/presence/${coursId}`,
         {
@@ -89,15 +94,16 @@ export default function Presences({ params }) {
         },
         {
           headers: {
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         }
       );
 
-      console.log("Présences enregistrées avec succès:", response.data);
+      // console.log("Présences enregistrées avec succès:", response.data);
       router.back();
     } catch (error) {
-      console.error("Erreur lors de l'enregistrement des présences:", error);
+      // console.error("Erreur lors de l'enregistrement des présences:", error);
     } finally {
       setIsSaving(false);
     }

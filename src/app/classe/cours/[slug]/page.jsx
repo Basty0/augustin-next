@@ -35,7 +35,7 @@ const CoursListPage = ({ params }) => {
     try {
       const token = getCookie("userToken");
       if (!token) {
-        console.error("No token found");
+        // console.error("No token found");
         return;
       }
 
@@ -50,7 +50,7 @@ const CoursListPage = ({ params }) => {
       console.log(response.data);
       setCours(response.data || []);
     } catch (error) {
-      console.error("Error fetching cours:", error);
+      // console.error("Error fetching cours:", error);
       setCours([]);
     } finally {
       setLoading(false);
@@ -61,7 +61,7 @@ const CoursListPage = ({ params }) => {
     try {
       const token = getCookie("userToken");
       if (!token) {
-        console.error("No token found");
+        // console.error("No token found");
         return;
       }
 
@@ -88,10 +88,10 @@ const CoursListPage = ({ params }) => {
       }
     } catch (error) {
       if (error.response && error.response.status === 422) {
-        console.error("Validation error:", error.response.data);
+        // console.error("Validation error:", error.response.data);
         alert("Erreur de validation: Veuillez vérifier les données saisies.");
       } else {
-        console.error("Error adding cours:", error);
+        // console.error("Error adding cours:", error);
         alert("Erreur: Impossible d'ajouter le cours. Veuillez réessayer.");
       }
     }
