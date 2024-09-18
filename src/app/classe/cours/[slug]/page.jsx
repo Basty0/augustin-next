@@ -1,27 +1,24 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Card, Button } from "react-bootstrap";
-import { ArrowLeft, BadgePlus, FilePlus2, Minimize2 } from "lucide-react";
+import { ArrowLeft, FilePlus2 } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Header from "@/components/Header";
 import Verie from "@/components/Verie";
 
 const CoursListPage = ({ params }) => {
-  const [cours, setCours] = useState(0);
+  const [cours, setCours] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
   const [newCours, setNewCours] = useState({
-    chapitre: "",
     titre_d: "",
-    titre_f: "",
     heure_d: "",
     heure_f: "",
-    date: "",
   });
   const router = useRouter();
-
   const [enseId, setEnseId] = useState(0);
 
   useEffect(() => {
@@ -33,6 +30,7 @@ const CoursListPage = ({ params }) => {
     let parts = value.split(`; ${name}=`);
     if (parts.length === 2) return parts.pop()?.split(";").shift();
   }
+
   const fetchCours = async () => {
     try {
       const token = getCookie("userToken");
@@ -83,12 +81,9 @@ const CoursListPage = ({ params }) => {
         fetchCours();
         setModalVisible(false);
         setNewCours({
-          chapitre: "",
           titre_d: "",
-          titre_f: "",
           heure_d: "",
           heure_f: "",
-          date: "",
         });
       }
     } catch (error) {
@@ -116,9 +111,9 @@ const CoursListPage = ({ params }) => {
   }
 
   return (
-    <Verie className="">
+    <Verie>
       <Header />
-      <div className="container mx-auto px-4 ">
+      <div className="container mx-auto px-4">
         <button
           onClick={() => router.back()}
           className="absolute top-1 left-1 z-10 bg-green-300 p-2 rounded-full"
@@ -127,15 +122,15 @@ const CoursListPage = ({ params }) => {
         </button>
 
         <div className="py-4 mt-6">
-          <div className="bg-green-200 md:flex rounded-lg mb-4  md:p-3">
+          <div className="bg-green-200 md:flex rounded-lg mb-4 md:p-3">
             <Image
               src="/images/image4.png"
               alt="Élève"
               width={500}
               height={200}
-              className="w-full md:w-[40%] h-40 md:h-60 md:rounded-lg  rounded-t-lg mb-4 md:mb-0 object-cover"
+              className="w-full md:w-[40%] h-40 md:h-60 md:rounded-lg rounded-t-lg mb-4 md:mb-0 object-cover"
             />
-            <div className="p-6 ">
+            <div className="p-6">
               <h2 className="text-2xl font-bold text-green-900">Les cours</h2>
               <p className="text-gray-600 mt-2">
                 Découvrez tous les cours disponibles pour votre classe
@@ -204,25 +199,9 @@ const CoursListPage = ({ params }) => {
                 handleAddCours();
               }}
             >
-              <h1>{enseId}</h1>
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text">Chapitre</span>
-                </label>
-                <input
-                  type="text"
-                  className="input input-bordered"
-                  value={newCours.chapitre}
-                  onChange={(e) =>
-                    setNewCours({ ...newCours, chapitre: e.target.value })
-                  }
-                />
-              </div>
-
-              {/* New fields */}
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Titre (début)</span>
+                  <span className="label-text">Titre</span>
                 </label>
                 <input
                   type="text"
@@ -230,20 +209,6 @@ const CoursListPage = ({ params }) => {
                   value={newCours.titre_d}
                   onChange={(e) =>
                     setNewCours({ ...newCours, titre_d: e.target.value })
-                  }
-                />
-              </div>
-
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Titre (fin)</span>
-                </label>
-                <input
-                  type="text"
-                  className="input input-bordered"
-                  value={newCours.titre_f}
-                  onChange={(e) =>
-                    setNewCours({ ...newCours, titre_f: e.target.value })
                   }
                 />
               </div>

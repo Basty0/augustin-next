@@ -24,18 +24,17 @@ export default function Page({ params }) {
   const [loading, setLoading] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
   const [updatedCours, setUpdatedCours] = useState({
-    user_id: "",
-    chapitre: "",
     titre_d: "",
-    titre_f: "",
     heure_d: "",
     heure_f: "",
   });
+
   function getCookie(name) {
     let value = `; ${document.cookie}`;
     let parts = value.split(`; ${name}=`);
     if (parts.length === 2) return parts.pop()?.split(";").shift();
   }
+
   const fetchData = useCallback(async () => {
     try {
       const token = getCookie("userToken");
@@ -54,16 +53,12 @@ export default function Page({ params }) {
       );
 
       const data = response.data;
-      console.log(data);
       setCours(data.cour || {});
       setPresences(data.presences || []);
       setPresents(data.present || []);
       setAbsents(data.absent || []);
       setUpdatedCours({
-        user_id: data.cour.user_id,
-        chapitre: data.cour.chapitre,
         titre_d: data.cour.titre_d,
-        titre_f: data.cour.titre_f,
         heure_d: data.cour.heure_d,
         heure_f: data.cour.heure_f,
       });
@@ -176,10 +171,6 @@ export default function Page({ params }) {
               <span className="text-lg">{cours.titre_d}</span>
             </div>
             <div className="flex items-center mb-2">
-              <BookMarked className="mr-2" size={18} />
-              <span>{cours.chapitre}</span>
-            </div>
-            <div className="flex items-center mb-2">
               <Clock1 className="mr-2" size={18} />
               <span>
                 {cours.heure_d} - {cours.heure_f}
@@ -225,29 +216,11 @@ export default function Page({ params }) {
               <h3 className="font-bold text-lg mb-4">Modifier le cours</h3>
               <input
                 type="text"
-                placeholder="Chapitre"
-                className="input input-bordered w-full mb-4"
-                value={updatedCours.chapitre}
-                onChange={(e) =>
-                  setUpdatedCours({ ...updatedCours, chapitre: e.target.value })
-                }
-              />
-              <input
-                type="text"
                 placeholder="Titre début"
                 className="input input-bordered w-full mb-4"
                 value={updatedCours.titre_d}
                 onChange={(e) =>
                   setUpdatedCours({ ...updatedCours, titre_d: e.target.value })
-                }
-              />
-              <input
-                type="text"
-                placeholder="Titre fin"
-                className="input input-bordered w-full mb-4"
-                value={updatedCours.titre_f}
-                onChange={(e) =>
-                  setUpdatedCours({ ...updatedCours, titre_f: e.target.value })
                 }
               />
               <input

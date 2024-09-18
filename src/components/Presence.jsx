@@ -21,6 +21,7 @@ export default function Presence({ params }) {
     if (params.id) {
       fetchAllPresences();
     }
+    (" ");
   }, [params.id]);
 
   function getCookie(name) {

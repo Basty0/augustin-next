@@ -68,25 +68,33 @@ export default function Presences({ params }) {
   };
 
   const updateEleveStatus = (eleve_id) => {
-    const eleveExists = presences.some(
-      (student) => student.eleve_id === parseInt(eleve_id)
-    );
+    setPresences((prevPresences) => {
+      // Vérifie si l'élève existe dans la liste des présences
+      const eleveExists = prevPresences.some(
+        (student) => student.eleve_id === parseInt(eleve_id)
+      );
 
-    if (eleveExists) {
-      const updatedData = presences.map((student) => {
-        if (student.eleve_id === parseInt(eleve_id)) {
-          return {
-            ...student,
-            status: "present",
-          };
-        }
-        return student;
-      });
-      setPresences(updatedData);
-      setNotif(1);
-    } else {
-      setNotif(2);
-    }
+      if (eleveExists) {
+        // Met à jour seulement l'élève scanné sans modifier les autres
+        const updatedData = prevPresences.map((student) => {
+          if (
+            student.eleve_id === parseInt(eleve_id) &&
+            student.status !== "present"
+          ) {
+            return {
+              ...student,
+              status: "present", // Marque l'élève comme présent
+            };
+          }
+          return student; // Garde l'état des autres élèves inchangé
+        });
+        setNotif(1); // Notification de succès
+        return updatedData; // Retourne la nouvelle liste de présences
+      } else {
+        setNotif(2); // Notification d'échec si l'élève n'est pas trouvé
+        return prevPresences; // Ne modifie pas la liste des présences
+      }
+    });
   };
 
   const enregistrerPresences = async () => {
@@ -115,8 +123,8 @@ export default function Presences({ params }) {
 
   const handleScan = (result) => {
     if (result) {
+      console.log(result.text);
       updateEleveStatus(result.text);
-      // Supprimez cette ligne : setNotif(1);
       setTimeout(() => setNotif(0), 2000);
     }
   };
