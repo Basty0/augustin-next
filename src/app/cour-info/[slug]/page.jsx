@@ -53,6 +53,7 @@ export default function Page({ params }) {
       );
 
       const data = response.data;
+      console.log(data);
       setCours(data.cour || {});
       setPresences(data.presences || []);
       setPresents(data.present || []);
@@ -117,15 +118,19 @@ export default function Page({ params }) {
     return (
       <div className="p-4 bg-red-50 rounded-lg border-2 border-red-600">
         <h3 className="text-xl font-bold mb-2">Absents</h3>
-        {absents.map((absent) => (
+        {absents.map((abs) => (
           <div
-            key={absent.id}
+            key={abs.id}
             className="bg-red-600 p-2 mb-2 rounded-md shadow text-white"
           >
-            <p className="font-semibold">
-              {absent.eleve.nom} {absent.eleve.prenom}
-            </p>
-            <p>{absent.status}</p>
+            {abs.eleve ? (
+              <p className="font-semibold">
+                {abs.eleve.nom} {abs.eleve.prenom}
+              </p>
+            ) : (
+              <p className="badge">élève est supprimé</p>
+            )}
+            <p>{abs.status}</p>
           </div>
         ))}
       </div>
@@ -136,15 +141,20 @@ export default function Page({ params }) {
     return (
       <div className="p-4 bg-green-50 rounded-lg border-2 border-green-600">
         <h3 className="text-xl font-bold mb-2">Présents</h3>
-        {presents.map((present) => (
+        {presents.map((pres) => (
           <div
-            key={present.id}
+            key={pres.id}
             className="bg-green-600 p-2 mb-2 rounded-md shadow text-white"
           >
-            <p className="font-semibold">
-              {present.eleve.nom} {present.eleve.prenom}
-            </p>
-            <p>{present.status}</p>
+            {pres.eleve ? (
+              <p className="font-semibold">
+                {pres.eleve.nom} {pres.eleve.prenom}
+              </p>
+            ) : (
+              <p className="badge">élève est supprimé</p>
+            )}
+
+            <p>{pres.status}</p>
           </div>
         ))}
       </div>
